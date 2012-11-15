@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 
 /**
  * MessageEngine is a key member of Messaging Component.
- * As a façade object, it receive the generic message from other MPI
+ * As a facade object, it receive the generic message from other MPI
  * component and return a processed message back.
  * 
  * There is 1 public methods can be used by other MPI component:

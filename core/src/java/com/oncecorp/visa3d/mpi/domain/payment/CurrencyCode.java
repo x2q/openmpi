@@ -212,11 +212,11 @@ public final class CurrencyCode {
 			currencyList.add(new CurrencyInfo("KAZAKSTAN","Tenge","398","2"));
 			currencyList.add(new CurrencyInfo("KENYA","Kenyan Shilling","404","2"));
 			currencyList.add(new CurrencyInfo("KIRIBATI","Australian Dollar","036","2"));
-			currencyList.add(new CurrencyInfo("KOREA, DEMOCRATIC PEOPLE’S REPUBLIC OF","North Korean Won","408","2"));
+			currencyList.add(new CurrencyInfo("KOREA, DEMOCRATIC PEOPLES REPUBLIC OF","North Korean Won","408","2"));
 			currencyList.add(new CurrencyInfo("KOREA, REPUBLIC OF","Won","410","0"));
 			currencyList.add(new CurrencyInfo("KUWAIT","Kuwaiti Dinar","414","3"));
 			currencyList.add(new CurrencyInfo("KYRGYZSTAN","Som","417","2"));
-			currencyList.add(new CurrencyInfo("LAO PEOPLE’S DEMOCRATIC REPUBLIC","Kip","418","2"));
+			currencyList.add(new CurrencyInfo("LAO PEOPLES DEMOCRATIC REPUBLIC","Kip","418","2"));
 			currencyList.add(new CurrencyInfo("LATVIA","Latvian Lats","428","2"));
 			currencyList.add(new CurrencyInfo("LEBANON","Lebanese Pound","422","2"));
 			currencyList.add(new CurrencyInfo("LESOTHO","Rand","710","2"));
@@ -283,8 +283,8 @@ public final class CurrencyCode {
 			currencyList.add(new CurrencyInfo("PORTUGAL","Portuguese Escudo","620","0"));
 			currencyList.add(new CurrencyInfo("PUERTO RICO","US Dollar","951","2"));
 			currencyList.add(new CurrencyInfo("QATAR","Qatari Rial","634","2"));
-			currencyList.add(new CurrencyInfo("RÉUNION","euro","978","2"));
-			currencyList.add(new CurrencyInfo("RÉUNION","French Franc","250","2"));
+			currencyList.add(new CurrencyInfo("REUNION","euro","978","2"));
+			currencyList.add(new CurrencyInfo("REUNION","French Franc","250","2"));
 			currencyList.add(new CurrencyInfo("ROMANIA","Leu","642","2"));
 			currencyList.add(new CurrencyInfo("RUSSIAN FEDERATION","Russian Ruble","810","2"));
 			currencyList.add(new CurrencyInfo("RUSSIAN FEDERATION","Russian Ruble","643","2"));
@@ -298,7 +298,7 @@ public final class CurrencyCode {
 			currencyList.add(new CurrencyInfo("SAMOA","Tala","882","2"));
 			currencyList.add(new CurrencyInfo("SAN MARINO","euro","978","2"));
 			currencyList.add(new CurrencyInfo("SAN MARINO","Italian Lira","380","0"));
-			currencyList.add(new CurrencyInfo("SÃO TOME AND PRINCIPE","Dobra","678","2"));
+			currencyList.add(new CurrencyInfo("SAO TOME AND PRINCIPE","Dobra","678","2"));
 			currencyList.add(new CurrencyInfo("SAUDI ARABIA","Saudi Riyal","682","2"));
 			currencyList.add(new CurrencyInfo("SENEGAL","CFA Franc","952","0"));
 			currencyList.add(new CurrencyInfo("SEYCHELLES","Seychelles Rupee","690","2"));
@@ -325,7 +325,7 @@ public final class CurrencyCode {
 			currencyList.add(new CurrencyInfo("THAILAND","Baht","764","2"));
 			currencyList.add(new CurrencyInfo("TOGO","CFA Franc","952","0"));
 			currencyList.add(new CurrencyInfo("TOKELAU","New Zealand Dollar","554","2"));
-			currencyList.add(new CurrencyInfo("TONGA","Pa’anga","776","2"));
+			currencyList.add(new CurrencyInfo("TONGA","Paanga","776","2"));
 			currencyList.add(new CurrencyInfo("TRINIDAD AND TOBAGO","Trinidad and Tobago Dollar","780","2"));
 			currencyList.add(new CurrencyInfo("TUNISIA","Tunisian Dinar","788","2"));
 			currencyList.add(new CurrencyInfo("TURKEY","Turkish Lira","792","0"));
