@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!--
+<!DOCTYPE emailTemplate SYSTEM "mpi-mail-template.dtd">
+-->
+<emailTemplate>
+	<subject><![CDATA[System Notification: ONCEmpi component]]></subject>
+	<body><![CDATA[**                                                                               **
+** System Notification: ONCEmpi component                                        **
+** Installed on oncempi.oncecorp.com                                             **
+**                                                                               **
+
+Log Database Notification
+==========================
+Log Name: %logName%
+Schema Name: %schemaName%
+Current Table: Messages
+Current Log size: %currentNumber% messages logged
+Threshold size: %thresholdNumber%
+Maximum size: %maximumNumber%
+Last updated: %timestamp%
+==========================
+Please take corrective action to properly archive the logging data and reset the logging database
+in order to ensure continuous and successful logging operations.
+
+This email was sent automatically by the ONCEmpi component because the option
+          [X]Notify by email on exceeded threshold or maximum
+
+was selected in your user preferences.
+]]></body>
+</emailTemplate>

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	* (C) Copyright Once Corp. 2002-2003  All rights reserved.
+	*
+	* The program is provided "as is" without any warranty express or
+	* implied, including the warranty of non-infringement and the implied
+	* warranties of merchantability and fitness for a particular purpose.
+	* Once Corporation will not be liable for any damages suffered by
+	* you as a result of using the Program.
+	* In no event will Once Corporation be liable for any special, indirect
+	* or consequential damages or lost profits even if Once Corporation
+	* has been advised of the possibility of their occurrence. Once
+	* Corporation will not be liable for any third party claims against you.
+	*
+	* ========================================================
+	* $Header: $
+	*
+-->
+<!--
+	This file describe all message types and fields needed by Databridge component
+
+	Author:   Gang Wu [gwu@oncecorp.com]
+
+-->
+<messageDefiniton>
+	<!-- ====================================================================================== -->
+	<!-- 3-D Secure Message Definition section 													-->
+	<!-- This section defined the messages within the 3-D Secure domain 						-->
+	<!-- ====================================================================================== -->
+	<!-- message type="CRReq" version="1.0.1, 1.0.2" xpath="/ThreeDSecure/Message/CRReq">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">Merchant/acqBIN</field>
+		<field mandatory="true" mustEncryption="false">Merchant/merID</field>
+		<field mandatory="false" mustEncryption="false">Merchant/password</field>
+		<field mandatory="false" mustEncryption="false">Merchant/name</field>
+		<field mandatory="false" mustEncryption="false">Merchant/country</field>
+		<field mandatory="false" mustEncryption="false">Merchant/url</field>
+		<field mandatory="false" mustEncryption="false">serialNumber</field>
+		<field mandatory="false" mustEncryption="false">Extension</field>
+	</message>
+
+	<message type="CRRes" version="1.0.1, 1.0.2" xpath="/ThreeDSecure/Message/CRRes">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="false" mustEncryption="false">CR/begin</field>
+		<field mandatory="false" mustEncryption="false">CR/end</field>
+		<field mandatory="false" mustEncryption="false">CR/action</field>
+		<field mandatory="false" mustEncryption="false">IReq/iReqCode</field>
+		<field mandatory="false" mustEncryption="false">IReq/iReqDetail</field>
+		<field mandatory="false" mustEncryption="false">IReq/vendorCode</field>
+		<field mandatory="true" mustEncryption="false">serialNumber</field>
+		<field mandatory="false" mustEncryption="false">Extension</field>
+	</message -->
+
+	<message type="VEReq" version="1.0.1, 1.0.2" xpath="/ThreeDSecure/Message/VEReq">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="true">pan</field>
+		<field mandatory="true" mustEncryption="false">Merchant/acqBIN</field>
+		<field mandatory="true" mustEncryption="false">Merchant/merID</field>
+		<field mandatory="false" mustEncryption="false">Merchant/password</field>
+		<!-- field mandatory="false" mustEncryption="false">Merchant/name</field>
+		<field mandatory="false" mustEncryption="false">Merchant/country</field>
+		<field mandatory="false" mustEncryption="false">Merchant/url</field -->
+		<field mandatory="false" mustEncryption="false">Browser/deviceCategory</field>
+		<field mandatory="false" mustEncryption="false">Browser/accept</field>
+		<field mandatory="false" mustEncryption="false">Browser/userAgent</field>
+		<field mandatory="false" mustEncryption="false">Extension</field>
+	</message>
+
+	<message type="VERes" version="1.0.1, 1.0.2" xpath="/ThreeDSecure/Message/VERes">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">CH/enrolled</field>
+		<field mandatory="false" mustEncryption="false">CH/acctID</field>
+		<!-- field mandatory="false" mustEncryption="false">CH/expiry</field -->
+		<field mandatory="false" mustEncryption="false">url</field>
+		<field mandatory="false" mustEncryption="false">protocol</field>
+		<field mandatory="false" mustEncryption="false">IReq/iReqCode</field>
+		<field mandatory="false" mustEncryption="false">IReq/iReqDetail</field>
+		<field mandatory="false" mustEncryption="false">IReq/vendorCode</field>
+		<field mandatory="false" mustEncryption="false">Extension</field>
+	</message>
+
+	<message type="PAReq" version="1.0.1, 1.0.2" xpath="/ThreeDSecure/Message/PAReq">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">Merchant/acqBIN</field>
+		<field mandatory="true" mustEncryption="false">Merchant/merID</field>
+		<!-- field mandatory="false" mustEncryption="false">Merchant/password</field -->
+		<field mandatory="true" mustEncryption="false">Merchant/name</field>
+		<field mandatory="true" mustEncryption="false">Merchant/country</field>
+		<field mandatory="true" mustEncryption="false">Merchant/url</field>
+		<field mandatory="true" mustEncryption="false">Purchase/xid</field>
+		<field mandatory="true" mustEncryption="false">Purchase/date</field>
+		<field mandatory="true" mustEncryption="false">Purchase/amount</field>
+		<field mandatory="true" mustEncryption="false">Purchase/purchAmount</field>
+		<field mandatory="true" mustEncryption="false">Purchase/currency</field>
+		<field mandatory="true" mustEncryption="false">Purchase/exponent</field>
+		<field mandatory="false" mustEncryption="false">Purchase/desc</field>
+		<field mandatory="false" mustEncryption="false">Purchase/Recur/frequency</field>
+		<field mandatory="false" mustEncryption="false">Purchase/Recur/endRecur</field>
+		<field mandatory="false" mustEncryption="false">Purchase/install</field>
+		<!-- field mandatory="false" mustEncryption="false">CH/enrolled</field -->
+		<field mandatory="true" mustEncryption="false">CH/acctID</field>
+		<field mandatory="true" mustEncryption="false">CH/expiry</field>
+		<field mandatory="false" mustEncryption="false">Extension</field>
+	</message>
+
+	<message type="PARes" version="1.0.1, 1.0.2" xpath="/ThreeDSecure/Message/PARes">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">Merchant/acqBIN</field>
+		<field mandatory="true" mustEncryption="false">Merchant/merID</field>
+		<!-- field mandatory="false" mustEncryption="false">Merchant/password</field>
+		<field mandatory="false" mustEncryption="false">Merchant/name</field>
+		<field mandatory="false" mustEncryption="false">Merchant/country</field>
+		<field mandatory="false" mustEncryption="false">Merchant/url</field -->
+		<field mandatory="true" mustEncryption="false">Purchase/xid</field>
+		<field mandatory="true" mustEncryption="false">Purchase/date</field>
+		<!-- field mandatory="false" mustEncryption="false">Purchase/amount</field -->
+		<field mandatory="true" mustEncryption="false">Purchase/purchAmount</field>
+		<field mandatory="true" mustEncryption="false">Purchase/currency</field>
+		<field mandatory="true" mustEncryption="false">Purchase/exponent</field>
+		<!-- field mandatory="false" mustEncryption="false">Purchase/desc</field>
+		<field mandatory="false" mustEncryption="false">Purchase/Recur/frequency</field>
+		<field mandatory="false" mustEncryption="false">Purchase/Recur/endRecur</field>
+		<field mandatory="false" mustEncryption="false">Purchase/install</field -->
+		<field mandatory="true" mustEncryption="true">pan</field>
+		<field mandatory="true" mustEncryption="false">TX/time</field>
+		<field mandatory="true" mustEncryption="false">TX/status</field>
+		<field mandatory="false" mustEncryption="false">TX/cavv</field>
+		<field mandatory="false" mustEncryption="false">TX/eci</field>
+		<field mandatory="false" mustEncryption="false">TX/cavvAlgorithm</field>
+		<field mandatory="false" mustEncryption="false">IReq/iReqCode</field>
+		<field mandatory="false" mustEncryption="false">IReq/iReqDetail</field>
+		<field mandatory="false" mustEncryption="false">IReq/vendorCode</field>
+		<field mandatory="false" mustEncryption="false">Extension</field>
+	</message>
+
+	<!-- message type="IPReq" version="1.0.1" xpath="/ThreeDSecure/Message/IPReq">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">Merchant/acqBIN</field>
+		<field mandatory="true" mustEncryption="false">Merchant/merID</field>
+		<field mandatory="false" mustEncryption="false">Merchant/password</field>
+		<field mandatory="false" mustEncryption="false">Merchant/name</field>
+		<field mandatory="false" mustEncryption="false">Merchant/country</field>
+		<field mandatory="false" mustEncryption="false">Merchant/url</field>
+		<field mandatory="false" mustEncryption="false">CH/enrolled</field>
+		<field mandatory="false" mustEncryption="false">CH/acctID</field>
+		<field mandatory="false" mustEncryption="false">CH/expiry</field>
+		<field mandatory="false" mustEncryption="false">ProfileRequest/profileRequestScope/profileRequestItem</field>
+		<field mandatory="false" mustEncryption="false">Extension</field>
+	</message>
+
+	<message type="IPRes" version="1.0.1" xpath="/ThreeDSecure/Message/IPRes">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">Merchant/acqBIN</field>
+		<field mandatory="true" mustEncryption="false">Merchant/merID</field>
+		<field mandatory="false" mustEncryption="false">Merchant/password</field>
+		<field mandatory="false" mustEncryption="false">Merchant/name</field>
+		<field mandatory="false" mustEncryption="false">Merchant/country</field>
+		<field mandatory="false" mustEncryption="false">Merchant/url</field>
+		<field mandatory="true" mustEncryption="true">pan</field>
+		<field mandatory="false" mustEncryption="false">Profile/profileName</field>
+		<field mandatory="false" mustEncryption="false">Profile/profileData/profileScope/profileDataItem</field>
+		<field mandatory="true" mustEncryption="false">TX/time</field>
+		<field mandatory="true" mustEncryption="false">TX/status</field>
+		<field mandatory="false" mustEncryption="false">TX/cavv</field>
+		<field mandatory="false" mustEncryption="false">TX/eci</field>
+		<field mandatory="false" mustEncryption="false">TX/cavvAlgorithm</field>
+		<field mandatory="false" mustEncryption="false">IReq/iReqCode</field>
+		<field mandatory="false" mustEncryption="false">IReq/iReqDetail</field>
+		<field mandatory="false" mustEncryption="false">IReq/vendorCode</field>
+		<field mandatory="false" mustEncryption="false">Extension</field>
+	</message -->
+
+	<message type="Error" version="1.0.1, 1.0.2" xpath="/ThreeDSecure/Message/Error">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">errorCode</field>
+		<field mandatory="true" mustEncryption="false">errorMessage</field>
+		<field mandatory="true" mustEncryption="false">errorDetail</field>
+		<field mandatory="false" mustEncryption="false">vendorCode</field>
+	</message>
+
+	<!-- ====================================================================================== -->
+	<!-- MPI Message Definition section (for Payment functionality)								-->
+	<!-- This section defined the messages used by the MPI to carry-out and respond to requests -->
+	<!-- ====================================================================================== -->
+	<message type="PaymentVerifReq" version="1.0" xpath="/MPI_Interface/PaymentVerifReq">
+		<field mandatory="true" mustEncryption="false">version</field>
+        <!-- field mandatory="true" mustEncryption="false">merchantID</field -->
+		<field mandatory="true" mustEncryption="false">merchantTermURL</field>
+		<field mandatory="true" mustEncryption="false">merchantData</field>
+        <!-- field mandatory="false" mustEncryption="false">transactionID</field -->
+		<field mandatory="true" mustEncryption="true">pan</field>
+		<field mandatory="true" mustEncryption="false">panExpiry</field>
+		<field mandatory="true" mustEncryption="false">purchaseDate</field>
+		<field mandatory="true" mustEncryption="false">purchaseAmount</field>
+		<field mandatory="true" mustEncryption="false">purchasePurchAmount</field>
+		<field mandatory="true" mustEncryption="false">purchaseCurrency</field>
+		<field mandatory="false" mustEncryption="false">purchaseDesc</field>
+        <!-- field mandatory="false" mustEncryption="false">purchaseInfo</field -->
+		<field mandatory="false" mustEncryption="false">browserCategory</field>
+		<field mandatory="false" mustEncryption="false">browserAccept</field>
+		<field mandatory="false" mustEncryption="false">browserAgent</field>
+		<field mandatory="false" mustEncryption="false">PurchaseRecur/frequency</field>
+		<field mandatory="false" mustEncryption="false">PurchaseRecur/endRecur</field>
+		<field mandatory="false" mustEncryption="false">purchaseInstall</field>
+	</message>
+
+    <message type="PaymentVerifReq" version="1.1" xpath="/MPI_Interface/PaymentVerifReq">
+       <field mandatory="true" mustEncryption="false">version</field>
+       <field mandatory="true" mustEncryption="false">merchantID</field>
+       <field mandatory="false" mustEncryption="false">merchantTermURL</field>
+       <field mandatory="false" mustEncryption="false">merchantData</field>
+       <field mandatory="false" mustEncryption="false">transactionID</field>
+       <field mandatory="true" mustEncryption="true">pan</field>
+       <field mandatory="true" mustEncryption="false">panExpiry</field>
+       <field mandatory="true" mustEncryption="false">purchaseDate</field>
+       <field mandatory="true" mustEncryption="false">purchaseAmount</field>
+       <field mandatory="true" mustEncryption="false">purchasePurchAmount</field>
+       <field mandatory="false" mustEncryption="false">purchaseCurrency</field>
+       <field mandatory="false" mustEncryption="false">purchaseDesc</field>
+       <field mandatory="false" mustEncryption="false">purchaseInfo</field>
+       <field mandatory="false" mustEncryption="false">browserCategory</field>
+       <field mandatory="false" mustEncryption="false">browserAccept</field>
+       <field mandatory="false" mustEncryption="false">browserAgent</field>
+       <field mandatory="false" mustEncryption="false">PurchaseRecur/frequency</field>
+       <field mandatory="false" mustEncryption="false">PurchaseRecur/endRecur</field>
+       <field mandatory="false" mustEncryption="false">purchaseInstall</field>
+    </message>
+
+	<message type="PaymentVerifRes" version="1.0" xpath="/MPI_Interface/PaymentVerifRes">
+		<field mandatory="true" mustEncryption="false">version</field>
+        <!-- field mandatory="true" mustEncryption="false">merchantID</field -->
+		<field mandatory="true" mustEncryption="false">enrolled</field>
+		<field mandatory="false" mustEncryption="false">invalidReq</field>
+		<field mandatory="false" mustEncryption="false">invalidDetails</field>
+		<field mandatory="false" mustEncryption="false">vendorCode</field>
+		<field mandatory="false" mustEncryption="false">htmlForm</field>
+	</message>
+
+    <message type="PaymentVerifRes" version="1.1" xpath="/MPI_Interface/PaymentVerifRes">
+       <field mandatory="true" mustEncryption="false">version</field>
+       <field mandatory="true" mustEncryption="false">merchantID</field>
+       <field mandatory="true" mustEncryption="false">enrolled</field>
+       <field mandatory="false" mustEncryption="false">invalidReq</field>
+       <field mandatory="false" mustEncryption="false">invalidDetails</field>
+       <field mandatory="false" mustEncryption="false">vendorCode</field>
+       <field mandatory="false" mustEncryption="false">htmlForm</field>
+    </message>
+
+	<message type="PaymentAuthReq" version="1.0" xpath="/MPI_Interface/PaymentAuthReq">
+		<field mandatory="true" mustEncryption="false">version</field>
+        <!-- field mandatory="true" mustEncryption="false">merchantID</field -->
+		<field mandatory="true" mustEncryption="false">paymentAuthMsg</field>
+	</message>
+
+    <message type="PaymentAuthReq" version="1.1" xpath="/MPI_Interface/PaymentAuthReq">
+       <field mandatory="true" mustEncryption="false">version</field>
+       <field mandatory="true" mustEncryption="false">merchantID</field>
+       <field mandatory="true" mustEncryption="false">paymentAuthMsg</field>
+    </message>
+
+	<message type="PaymentAuthRes" version="1.0" xpath="/MPI_Interface/PaymentAuthRes">
+		<field mandatory="true" mustEncryption="false">version</field>
+        <!-- field mandatory="true" mustEncryption="false">merchantID</field -->
+		<field mandatory="true" mustEncryption="false">transactionID</field>
+		<field mandatory="true" mustEncryption="false">purchaseDate</field>
+		<field mandatory="true" mustEncryption="false">purchaseAmount</field>
+		<field mandatory="true" mustEncryption="false">authDate</field>
+		<field mandatory="true" mustEncryption="false">currency</field>
+		<field mandatory="true" mustEncryption="false">exponent</field>
+		<field mandatory="true" mustEncryption="false">status</field>
+		<field mandatory="false" mustEncryption="false">cavv</field>
+		<field mandatory="false" mustEncryption="false">eci</field>
+		<field mandatory="false" mustEncryption="false">algorithm</field>
+		<field mandatory="false" mustEncryption="false">invalidReq</field>
+		<field mandatory="false" mustEncryption="false">invalidDetails</field>
+		<field mandatory="false" mustEncryption="false">vendorCode</field>
+	</message>
+
+    <message type="PaymentAuthRes" version="1.1" xpath="/MPI_Interface/PaymentAuthRes">
+        <field mandatory="true" mustEncryption="false">version</field>
+        <field mandatory="true" mustEncryption="false">merchantID</field>
+        <field mandatory="true" mustEncryption="false">transactionID</field>
+        <field mandatory="true" mustEncryption="false">purchaseDate</field>
+        <field mandatory="true" mustEncryption="false">purchaseAmount</field>
+        <field mandatory="true" mustEncryption="false">authDate</field>
+        <field mandatory="true" mustEncryption="false">currency</field>
+        <field mandatory="true" mustEncryption="false">exponent</field>
+        <field mandatory="true" mustEncryption="false">status</field>
+        <field mandatory="false" mustEncryption="false">cavv</field>
+        <field mandatory="false" mustEncryption="false">eci</field>
+        <field mandatory="false" mustEncryption="false">algorithm</field>
+        <field mandatory="false" mustEncryption="false">invalidReq</field>
+        <field mandatory="false" mustEncryption="false">invalidDetails</field>
+        <field mandatory="false" mustEncryption="false">vendorCode</field>
+    </message>
+
+	<!-- message type="ProfileVerifReq" version="1.0, 1.1" xpath="/MPI_Interface/ProfileVerifReq">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">merchantTermURL</field>
+		<field mandatory="true" mustEncryption="false">merchantData</field>
+		<field mandatory="true" mustEncryption="true">pan</field>
+		<field mandatory="false" mustEncryption="false">panExpiry</field>
+		<field mandatory="false" mustEncryption="false">browserCategory</field>
+		<field mandatory="false" mustEncryption="false">browserAccept</field>
+		<field mandatory="false" mustEncryption="false">browserAgent</field>
+		<field mandatory="false" mustEncryption="false">ProfileRequest/ProfileRequestScope/profileRequestItem</field>
+	</message>
+
+	<message type="ProfileVerifRes" version="1.0, 1.1" xpath="/MPI_Interface/ProfileVerifRes">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">enrolled</field>
+		<field mandatory="false" mustEncryption="false">invalidReq</field>
+		<field mandatory="false" mustEncryption="false">invalidDetails</field>
+		<field mandatory="false" mustEncryption="false">vendorCode</field>
+		<field mandatory="false" mustEncryption="false">htmlForm</field>
+	</message>
+
+	<message type="ProfileAuthReq" version="1.0, 1.1" xpath="/MPI_Interface/ProfileAuthReq">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="true" mustEncryption="false">profileAuthMsg</field>
+	</message>
+
+	<message type="ProfileAuthRes" version="1.0, 1.1" xpath="/MPI_Interface/ProfileAuthRes">
+		<field mandatory="true" mustEncryption="false">version</field>
+		<field mandatory="false" mustEncryption="false">Profile/profileName</field>
+		<field mandatory="false" mustEncryption="false">Profile/ProfileData/ProfileScope/profileDataItem</field>
+		<field mandatory="true" mustEncryption="false">authDate</field>
+		<field mandatory="true" mustEncryption="false">status</field>
+		<field mandatory="false" mustEncryption="false">invalidReq</field>
+		<field mandatory="false" mustEncryption="false">invalidDetails</field>
+		<field mandatory="false" mustEncryption="false">vendorCode</field>
+	</message -->
+
+	<message type="MPIError" version="1.0" xpath="/MPI_Interface/MPIError">
+		<field mandatory="true" mustEncryption="false">version</field>
+        <!-- field mandatory="true" mustEncryption="false">merchantID</field -->
+		<field mandatory="true" mustEncryption="false">errorCode</field>
+		<field mandatory="true" mustEncryption="false">errorMessage</field>
+		<field mandatory="false" mustEncryption="false">errorDetail</field>
+		<field mandatory="false" mustEncryption="false">vendorCode</field>
+	</message>
+
+    <message type="MPIError" version="1.1" xpath="/MPI_Interface/MPIError">
+        <field mandatory="true" mustEncryption="false">version</field>
+        <field mandatory="true" mustEncryption="false">merchantID</field>
+        <field mandatory="true" mustEncryption="false">errorCode</field>
+        <field mandatory="true" mustEncryption="false">errorMessage</field>
+        <field mandatory="false" mustEncryption="false">errorDetail</field>
+        <field mandatory="false" mustEncryption="false">vendorCode</field>
+    </message>
+
+
+
+</messageDefiniton>
+

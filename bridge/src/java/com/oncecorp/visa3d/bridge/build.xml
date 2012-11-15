@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Ant 1.5 onceMPI core build script for ThreeDSecure VISA MPI product
+
+    Build file to allow ant (http://jakarta.apache.org/ant/) to be used
+    to build VISA MPI Databridge Component.
+
+    Author: swang@oncecorp.com
+-->
+
+<project name="Visa 3D - MPI Databridge SubProject" default="bridge-source-build" basedir=".">
+
+  <!-- ******************************************************************************************
+       * Initilization of all property settings
+       ******************************************************************************************-->
+  <target name="bridge-source-init">
+    <property name="bridge.source.javadoc.dir" value="${build.dir}/javadoc/bridge/java" />
+    <property name="bridge.source.jar.file" value="DataBridge.jar" />
+  </target>
+
+  <!-- ******************************************************************************************
+       * Prepare folder structure
+       ******************************************************************************************-->
+  <target name="bridge-source-prepare" depends="bridge-source-init, bridge-source-clean">
+    <echo message="Creating the necessary folder structure for Verified@ONCE Databridge" />
+
+    <!-- =======================================================================================
+         + create the necessary folder structure
+         ======================================================================================= -->
+    <mkdir dir="${bridge.source.class.dir}" />
+    <mkdir dir="${bridge.source.javadoc.dir}" />
+
+    <!-- =======================================================================================
+         + create reference to necessary 3rd party jar files
+         ======================================================================================= -->
+    <path id="javac.classpath">
+      <pathelement path="${classpath}" />
+      <fileset dir="${root.dir}" includes="${bridge.libs} ${bridge.xlibs}" />
+      <pathelement location="${bridge.source.class.dir}" />
+    </path>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Delete all *.class, javadoc files
+       ******************************************************************************************-->
+  <target name="bridge-source-clean" depends="bridge-source-init">
+    <echo message="Cleaning Verified@ONCE DataBridge binary files..." />
+
+    <delete failonerror="false" includeEmptyDirs="true">
+      <fileset dir="${bridge.source.class.dir}" />
+      <fileset dir="${bridge.source.javadoc.dir}" />
+    </delete>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build *.class files
+       ******************************************************************************************-->
+  <target name="bridge-source-build-class" depends="bridge-source-prepare">
+    <echo message="Creating CLASS files for Verified@ONCE DataBridge..." />
+
+    <!-- compile all .java files -->
+    <javac compiler="${javac.compiler}"
+           srcdir="${bridge.source.dir}"
+           destdir="${bridge.source.class.dir}"
+           fork="${javac.fork}"
+           deprecation="${javac.deprecation}"
+           debug="${javac.debug}">
+      <classpath refid="javac.classpath" />
+    </javac>
+
+    <!-- copy all property files from source to class folder -->
+    <copy todir="${bridge.source.class.dir}/${bridge.package}">
+      <fileset dir="${bridge.source.dir}/${bridge.package}">
+        <include name="**/*" />
+        <exclude name="**/build.*" />
+        <exclude name="**/vss*.*" />
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build *.jar files
+       ******************************************************************************************-->
+  <target name="bridge-source-build-jar" depends="bridge-source-build-class">
+    <echo message="Creating JAR files for Verified@ONCE DataBridge..." />
+
+    <jar destfile="${dist.dir}/${bridge.source.jar.file}"
+         basedir="${bridge.source.class.dir}"
+         includes="${bridge.package}/**/*"
+    />
+  </target>
+
+  <!-- ******************************************************************************************
+       * Compile JavaDoc for Verified@ONCE DataBridge Main Component
+       ******************************************************************************************-->
+  <target name="bridge-source-build-javadoc" depends="bridge-source-prepare" if="enable.javadoc">
+    <echo message="Creating Javadoc for Verified@ONCE DataBridge Main component..." />
+
+    <javadoc sourcepath="${bridge.source.dir}"
+             destdir="${bridge.source.javadoc.dir}"
+             packagenames="com.oncecorp.visa3d.bridge.auditing.*,
+                           com.oncecorp.visa3d.bridge.beans.*,
+                           com.oncecorp.visa3d.bridge.configure.*,
+                           com.oncecorp.visa3d.bridge.jmxagent.*,
+                           com.oncecorp.visa3d.bridge.listening.*,
+                           com.oncecorp.visa3d.bridge.loggin.*,
+                           com.oncecorp.visa3d.bridge.monitoring.*,
+                           com.oncecorp.visa3d.bridge.plugin.*,
+                           com.oncecorp.visa3d.bridge.security.*,
+                           com.oncecorp.visa3d.bridge.startup.*,
+                           com.oncecorp.visa3d.bridge.utility.*"
+             author="true" version="true" use="true"
+             bottom="Copyright (c)2002-2003 Once Corporation. All Rights Reserved."
+             splitindex="true" noindex="false"
+             windowtitle="Verified@ONCE Data Bridge Component API"
+             doctitle="Verified@ONCE Data Bridge Component API">
+      <classpath refid="javac.classpath" />
+    </javadoc>
+
+    <!-- zip all javadoc into a zip file which is easier for versioning and maintenance -->
+    <zip zipfile="${dist.dir}/javaDoc-Databridge.zip"
+         basedir="${bridge.source.javadoc.dir}"
+         includes="**/*.html,**/*.css"
+         update="false" />
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build everything in subproject
+       ******************************************************************************************-->
+  <target name="bridge-source-build"
+          depends="bridge-source-build-class, bridge-source-build-jar, bridge-source-build-javadoc" />
+</project>

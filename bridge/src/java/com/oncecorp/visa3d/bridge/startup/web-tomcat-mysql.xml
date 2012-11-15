@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <display-name>DatabridgeServlet</display-name>
+  <description>Databridge Dummy Servlet</description>
+  <servlet>
+    <servlet-name>databridgeServlet</servlet-name>
+    <servlet-class>com.oncecorp.visa3d.bridge.startup.DatabridgeServlet</servlet-class>
+    <init-param>
+        <param-name>fromFile</param-name>
+        <param-value>true</param-value>
+    </init-param>
+    <init-param>
+        <param-name>fileName</param-name>
+        <param-value>d:\dev\oncempi\config\mpi-databridge.xml</param-value>
+    </init-param>
+
+	<!-- ========================================================================================= -->
+	<!-- Parameters that configures the database access for the Merchant Configuration information -->
+	<!-- This part is optional, if the datasource on the server is not defined, we use this;       -->
+	<!-- otherwise this part will be ignored                                                       -->
+	<!-- ========================================================================================= -->
+	<init-param>
+		<param-name>merchant.dao.jdbc.driver</param-name>
+		<param-value>_to_be_configured_</param-value>
+	</init-param>
+	<init-param>
+		<param-name>merchant.dao.db.url</param-name>
+		<param-value>_to_be_configured_</param-value>
+	</init-param>
+	<init-param>
+		<param-name>merchant.dao.db.username</param-name>
+		<param-value>_to_be_configured_</param-value>
+	</init-param>
+	<init-param>
+		<param-name>merchant.dao.db.password</param-name>
+		<param-value>_to_be_configured_</param-value>
+	</init-param>
+	<init-param>
+		<param-name>merchant.dao.db.schema</param-name>
+		<param-value>core</param-value>
+	</init-param>
+	<init-param>
+		<param-name>merchant.dao.db.table</param-name>
+		<param-value>merchant</param-value>
+	</init-param>
+
+
+    <load-on-startup>20</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>databridgeServlet</servlet-name>
+    <url-pattern>/databridgeServlet</url-pattern>
+  </servlet-mapping>
+
+  <!-- if this part we doesn't define we will use the above merchant info directly -->
+  <resource-ref>
+	 	<description>Merchant connection</description>
+		<res-ref-name>jdbc/MerchantEntry</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+   </resource-ref>
+
+   <!-- This part is no more used as we always use the xml configuration file
+   <resource-ref>
+	 	<description>Databridge connection</description>
+		<res-ref-name>jdbc/bridgeConfig</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+   </resource-ref>
+   -->
+</web-app>

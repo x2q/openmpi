@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by MBS (Management Board Secretariat) -->
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app id="WebApp">
+	<display-name>MPICoreV11Web</display-name>
+	<servlet>
+		<servlet-name>AuthenticatorServlet</servlet-name>
+		<display-name>AuthenticatorServlet</display-name>
+		<servlet-class>com.oncecorp.visa3d.mpi.controller.AuthenticatorServlet</servlet-class>
+
+		<!-- ===================================================================================== -->
+		<!-- Parameters that configures teh database access for the Core Configuration information -->
+		<!-- ===================================================================================== -->
+		<init-param>
+			<param-name>config.dao.jdbc.driver</param-name>
+			<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+		</init-param>
+		<init-param>
+			<param-name>config.dao.db.url</param-name>
+			<param-value>jdbc:oracle:thin:@lego:1521:mpidb</param-value>
+		</init-param>
+		<init-param>
+			<param-name>config.dao.db.username</param-name>
+			<param-value>system</param-value>
+		</init-param>
+		<init-param>
+			<param-name>config.dao.db.password</param-name>
+			<param-value>manager</param-value>
+		</init-param>
+		<init-param>
+			<param-name>config.dao.db.schema</param-name>
+			<param-value>MPICORE</param-value>
+		</init-param>
+		<init-param>
+			<param-name>config.dao.db.table</param-name>
+			<param-value>coreconfig</param-value>
+		</init-param>
+
+		<!-- ====================================================================================== -->
+		<!-- Parameters that configures teh database access for the Log4J Configuration information -->
+		<!-- ====================================================================================== -->
+		<init-param>
+			<param-name>log4j.dao.jdbc.driver</param-name>
+			<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+		</init-param>
+		<init-param>
+			<param-name>log4j.dao.db.url</param-name>
+			<param-value>jdbc:oracle:thin:@lego:1521:mpidb</param-value>
+		</init-param>
+		<init-param>
+			<param-name>log4j.dao.db.username</param-name>
+			<param-value>system</param-value>
+		</init-param>
+		<init-param>
+			<param-name>log4j.dao.db.password</param-name>
+			<param-value>manager</param-value>
+		</init-param>
+		<init-param>
+			<param-name>log4j.dao.db.schema</param-name>
+			<param-value>MPICORE</param-value>
+		</init-param>
+		<init-param>
+			<param-name>log4j.dao.db.table</param-name>
+			<param-value>logconfig</param-value>
+		</init-param>
+
+		<!-- ========================================================================================= -->
+		<!-- Parameters that configures teh database access for the Merchant Configuration information -->
+		<!-- ========================================================================================= -->
+		<init-param>
+			<param-name>merchant.dao.jdbc.driver</param-name>
+			<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+		</init-param>
+		<init-param>
+			<param-name>merchant.dao.db.url</param-name>
+			<param-value>jdbc:oracle:thin:@lego:1521:mpidb</param-value>
+		</init-param>
+		<init-param>
+			<param-name>merchant.dao.db.username</param-name>
+			<param-value>system</param-value>
+		</init-param>
+		<init-param>
+			<param-name>merchant.dao.db.password</param-name>
+			<param-value>manager</param-value>
+		</init-param>
+		<init-param>
+			<param-name>merchant.dao.db.schema</param-name>
+			<param-value>MPICORE</param-value>
+		</init-param>
+		<init-param>
+			<param-name>merchant.dao.db.table</param-name>
+			<param-value>MERCHANT</param-value>
+		</init-param>
+
+		<!-- Definition of Java system properties that will be installed on Servelt load -->
+		<init-param>
+			<param-name>java:coreConfigLocation</param-name>
+			<!-- Path Location of configuration files -->
+			<param-value>d:\dev\oncempi\config\</param-value>
+			<!-- Ensure this is terminated by a slash -->
+		</init-param>
+		<init-param>
+			<param-name>java:coreConfigName</param-name>
+			<!-- Path Location of configuration files -->
+			<param-value>CoreConfig.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>java:merchantConfigLocation</param-name>
+			<!-- Path Location of configuration files -->
+			<param-value>d:\dev\oncempi\config\</param-value>
+			<!-- Ensure this is terminated by a slash -->
+		</init-param>
+		<init-param>
+			<param-name>java:merchantConfigName</param-name>
+			<!-- Path Location of configuration files -->
+			<param-value>MerchantConfig.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>java:log4JConfigLocation</param-name>
+			<!-- Path Location of configuration files -->
+			<param-value>d:\dev\oncempi\config\</param-value>
+			<!-- Ensure this is terminated by a slash -->
+		</init-param>
+		<init-param>
+			<param-name>java:log4JConfigName</param-name>
+			<!-- Path Location of configuration files -->
+			<param-value>Log4JConfig.properties</param-value>
+		</init-param>
+		<load-on-startup>10</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>HTMLAuthenticatorServlet</servlet-name>
+		<display-name>HTMLAuthenticatorServlet</display-name>
+		<servlet-class>com.oncecorp.visa3d.mpi.controller.HTMLAuthenticatorServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AuthenticatorServlet</servlet-name>
+		<url-pattern>/Auth</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>HTMLAuthenticatorServlet</servlet-name>
+		<url-pattern>/HTMLAuth</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

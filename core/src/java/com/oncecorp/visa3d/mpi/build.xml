@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Ant 1.5 onceMPI core build script for ThreeDSecure VISA MPI product
+
+    Build file to allow ant (http://jakarta.apache.org/ant/) to be used
+    to build VISA MPI product version packages.
+
+    Author: swang@oncecorp.com
+-->
+
+<project name="Visa 3D - MPI Core SubProject" default="core-source-build" basedir=".">
+
+  <!-- ******************************************************************************************
+       * Initilization of all property settings
+       ******************************************************************************************-->
+  <target name="core-source-init">
+    <property name="core.source.javadoc.dir" value="${build.dir}/javadoc/core/java" />
+    <property name="core.source.jar.file" value="MPICore.jar" />
+  </target>
+
+  <!-- ******************************************************************************************
+       * Prepare folder structure
+       ******************************************************************************************-->
+  <target name="core-source-prepare" depends="core-source-clean">
+    <echo message="Creating the necessary folder structure for Verified@ONCE Core" />
+
+    <!-- =======================================================================================
+         + create the necessary folder structure
+         ======================================================================================= -->
+    <mkdir dir="${core.source.class.dir}" />
+    <mkdir dir="${core.source.javadoc.dir}" />
+
+    <!-- =======================================================================================
+         + create reference to necessary 3rd party jar files
+         ======================================================================================= -->
+    <path id="javac.classpath">
+      <pathelement path="${classpath}" />
+      <fileset dir="${root.dir}" includes="${core.libs} ${core.xlibs}" />
+      <pathelement location="${core.source.class.dir}" />
+    </path>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Delete all *.class, javadoc files
+       ******************************************************************************************-->
+  <target name="core-source-clean" depends="core-source-init">
+    <echo message="Cleaning Verified@ONCE Core binary files..." />
+
+    <delete failonerror="false" includeEmptyDirs="true">
+      <fileset dir="${core.source.class.dir}" />
+      <fileset dir="${core.source.javadoc.dir}" />
+    </delete>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build *.class files
+       ******************************************************************************************-->
+  <target name="core-source-build-class" depends="core-source-prepare">
+    <echo message="Creating CLASS files for Verified@ONCE Core..." />
+
+    <!-- compile all .java files -->
+    <javac compiler="${javac.compiler}"
+           srcdir="${core.source.dir}"
+           destdir="${core.source.class.dir}"
+           fork="${javac.fork}"
+           deprecation="${javac.deprecation}"
+           debug="${javac.debug}"
+		   debuglevel="${javac.debuglevel}">
+      <classpath refid="javac.classpath" />
+    </javac>
+
+    <!-- copy all property files from source to class folder -->
+    <copy todir="${core.source.class.dir}/${core.package}">
+      <fileset dir="${core.source.dir}/${core.package}">
+        <include name="**/*" />
+        <exclude name="**/build.*" />
+        <exclude name="**/vss*.*" />
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build *.jar files
+       ******************************************************************************************-->
+  <target name="core-source-build-jar" depends="core-source-build-class">
+    <echo message="Creating JAR files for Verified@ONCE Core..." />
+
+    <jar destfile="${dist.dir}/${core.source.jar.file}"
+         basedir="${core.source.class.dir}"
+         includes="${core.package}/**/*"
+    />
+  </target>
+
+  <!-- ******************************************************************************************
+       * Compile JavaDoc for Verified@ONCE Core Component
+       ******************************************************************************************-->
+  <target name="core-source-build-javadoc" depends="core-source-prepare" if="enable.javadoc">
+    <echo message="Creating Javadoc for Verified@ONCE Core..." />
+
+    <javadoc sourcepath="${core.source.dir}"
+             destdir="${core.source.javadoc.dir}"
+             packagenames="com.oncecorp.visa3d.mpi.configuration.*,
+                           com.oncecorp.visa3d.mpi.controller.*,
+                           com.oncecorp.visa3d.mpi.domain.*,
+                           com.oncecorp.visa3d.mpi.intf.*,
+                           com.oncecorp.visa3d.mpi.jmxagent.*,
+                           com.oncecorp.visa3d.mpi.logging.*,
+                           com.oncecorp.visa3d.mpi.messaging.*,
+                           com.oncecorp.visa3d.mpi.monitoring.*,
+                           com.oncecorp.visa3d.mpi.persistence.*,
+                           com.oncecorp.visa3d.mpi.publishing.*,
+                           com.oncecorp.visa3d.mpi.security.*,
+                           com.oncecorp.visa3d.mpi.utility.*"
+             author="true" version="true" use="true"
+             bottom="Copyright (c)2002-2003 Once Corporation. All Rights Reserved."
+             splitindex="true" noindex="false"
+             windowtitle="Verified@ONCE Core Server API"
+             doctitle="Verified@ONCE Core Server API">
+      <classpath refid="javac.classpath" />
+    </javadoc>
+
+    <!-- zip all javadoc into a zip file which is easier for versioning and maintenance -->
+    <zip zipfile="${dist.dir}/javaDoc-MPICore.zip"
+         basedir="${core.source.javadoc.dir}"
+         includes="**/*.html,**/*.css"
+         update="false" />
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build everything in subproject
+       ******************************************************************************************-->
+  <target name="core-source-build" depends="core-source-build-class, core-source-build-jar, core-source-build-javadoc" />
+</project>

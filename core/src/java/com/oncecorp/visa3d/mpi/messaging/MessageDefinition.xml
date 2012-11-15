@@ -1,0 +1,528 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!--
+	* (C) Copyright Once Corp. 2002  All rights reserved.
+	*
+	* The program is provided "as is" without any warranty express or
+	* implied, including the warranty of non-infringement and the implied
+	* warranties of merchantability and fitness for a particular purpose.
+	* Once Corporation will not be liable for any damages suffered by
+	* you as a result of using the Program.
+	* In no event will Once Corporation be liable for any special, indirect
+	* or consequential damages or lost profits even if Once Corporation
+	* has been advised of the possibility of their occurrence. Once
+	* Corporation will not be liable for any third party claims against you.
+	*
+	* ========================================================
+	* $Header: $
+	*
+-->
+
+<!--
+	This configuration file describe all message types that define the system and
+	describe the actual Java class implementation of that message along with the
+	associated peripheral processors and transformers computing processes.
+
+	Thus for each tuple {message type, message version} we have a corresponding message
+	implementation.
+
+	We also have for the same message tuple a processor object which takes care of the processing
+	part of the message.
+
+	Finally, we have a transformer object which transpose from one message tuple to the
+	corresponding one.
+
+	Author:   Jun Shi [jshi@oncecorp.com]
+	Martin Dufort [mdufort@oncecorp.com]
+
+	This file format has been modified to support multiple version number per message and also
+	add the critical extension support per message also...
+
+	Martin's Note: [Dec 5, 2002] Adding protocol information for each message so we can determine,
+		  		   at runtime, the set of 3-D Secure Message and MPI_Interface messages
+-->
+<messageDefinition>
+	<!-- ====================================================================================== -->
+	<!-- 3-D Secure Message Definition section 													-->
+	<!-- This section defined the messages within the 3-D Secure domain 						-->
+	<!-- ====================================================================================== -->
+	<message name="CRReq"
+			 version="1.0.1, 1.0.2"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.CRReqMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.CRReqProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/CRReq/Merchant/acqBIN/text()" attribute="merchantAcqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRReq/Merchant/merID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRReq/Merchant/password/text()" attribute="merchantPassword" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRReq/serialNumber/text()" attribute="serialNumber" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+<!--
+	<message name="CRRes"
+			 version="1.0.1"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.CRRes0Message"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.CRResProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/CRRes/CR" attribute="cr" type="cr" javatype="com.oncecorp.visa3d.mpi.domain.CardRange[]" />
+			<entry path="/ThreeDSecure/Message/CRRes/serialNumber/text()" attribute="serialNumber" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRRes/IReq/iReqCode/text()" attribute="ireqCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRRes/IReq/iReqDetail/text()" attribute="ireqDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRRes/IReq/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRRes/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+-->
+
+	<message name="CRRes"
+			 version="1.0.1, 1.0.2"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.CRResMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.CRResProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/CRRes/CR" attribute="cr" type="cr" javatype="com.oncecorp.visa3d.mpi.domain.CardRange[]" />
+			<entry path="/ThreeDSecure/Message/CRRes/serialNumber/text()" attribute="serialNumber" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRRes/IReq/iReqCode/text()" attribute="ireqCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRRes/IReq/iReqDetail/text()" attribute="ireqDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRRes/IReq/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/CRRes/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+
+<!--
+	<message name="VEReq"
+			 version="1.0.1"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.VEReq0Message"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.VEReqProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/VEReq/pan/text()" attribute="Pan" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Merchant/acqBIN/text()" attribute="acqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Merchant/merID/text()" attribute="merID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Merchant/password/text()" attribute="password" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Browser/deviceCategory/text()" attribute="deviceCategory" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Browser/accept/text()" attribute="accept" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Browser/userAgent/text()" attribute="userAgent" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+-->
+
+	<message name="VEReq"
+			 version="1.0.1, 1.0.2"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.VEReqMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.VEReqProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/VEReq/pan/text()" attribute="Pan" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Merchant/acqBIN/text()" attribute="acqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Merchant/merID/text()" attribute="merID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Merchant/password/text()" attribute="password" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Browser/deviceCategory/text()" attribute="deviceCategory" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Browser/accept/text()" attribute="accept" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Browser/userAgent/text()" attribute="userAgent" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VEReq/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+
+	<message name="VERes"
+			 version="1.0.1, 1.0.2"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.VEResMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.VEResProcessor">
+		<transformers>
+			<transform to="PAReq" version="1.0.1" impl="com.oncecorp.visa3d.mpi.domain.payment.VEResToPAReqTransformer" />
+			<transform to="PAReq" version="1.0.2" impl="com.oncecorp.visa3d.mpi.domain.payment.VEResToPAReqTransformer" />
+
+			<transform to="IPReq" version="1.0.1" impl="com.oncecorp.visa3d.pmpi.domain.payment.VEResToIPReqTransformer" />
+			<transform to="IPReq" version="1.0.2" impl="com.oncecorp.visa3d.pmpi.domain.payment.VEResToIPReqTransformer" />
+
+			<transform to="PaymentVerifRes" version="1.0" impl="com.oncecorp.visa3d.mpi.domain.payment.VEResToPaymentVerifResTransformer" />
+			<transform to="PaymentVerifRes" version="1.1" impl="com.oncecorp.visa3d.mpi.domain.payment.VEResToPaymentVerifResTransformer" />
+			<transform to="ProfileVerifRes" version="1.0" impl="com.oncecorp.visa3d.pmpi.domain.payment.VEResToProfileVerifResTransformer" />
+			<transform to="ProfileVerifRes" version="1.1" impl="com.oncecorp.visa3d.pmpi.domain.payment.VEResToProfileVerifResTransformer" />
+		</transformers>
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/VERes/CH/enrolled/text()" attribute="enrolled" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VERes/CH/acctID/text()" attribute="acctID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VERes/url/text()" attribute="url" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VERes/protocol" attribute="protocol" type="complex" javatype="java.lang.String[]" />
+			<entry path="/ThreeDSecure/Message/VERes/IReq/iReqCode/text()" attribute="iReqCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VERes/IReq/iReqDetail/text()" attribute="iReqDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VERes/IReq/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/VERes/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+
+	<message name="PAReq"
+			 version="1.0.1, 1.0.2"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.PAReqMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.PAReqProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/PAReq/Merchant/acqBIN/text()" attribute="merAcqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Merchant/merID/text()" attribute="merID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Merchant/name/text()" attribute="merName" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Merchant/country/text()" attribute="merCountry" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Merchant/url/text()" attribute="merURL" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/xid/text()" attribute="purXid" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/date/text()" attribute="purDate" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/amount/text()" attribute="purDispAmount" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/purchAmount/text()" attribute="purAmount" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/currency/text()" attribute="purCurrency" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/exponent/text()" attribute="purExponent" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/desc/text()" attribute="purDesc" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/Recur/frequency/text()" attribute="purRecurFrequency" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/Recur/endRecur/text()" attribute="purRecurExpiry" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Purchase/install/text()" attribute="purInstall" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/CH/acctID/text()" attribute="chAcctID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/CH/expiry/text()" attribute="chExpiry" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PAReq/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+
+<!--
+	<message name="PARes"
+			 version="1.0.1"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.PARes0Message"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.PAResProcessor">
+		<transformers>
+			<transform to="PaymentAuthRes" version="1.0" impl="com.oncecorp.visa3d.mpi.domain.payment.PAResToPaymentAuthResTransformer" />
+			<transform to="PaymentAuthRes" version="1.1" impl="com.oncecorp.visa3d.mpi.domain.payment.PAResToPaymentAuthResTransformer" />
+		</transformers>
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/PARes/@id" attribute="refId" type="attr" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Merchant/acqBIN/text()" attribute="merAcqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Merchant/merID/text()" attribute="merID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/xid/text()" attribute="purXid" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/date/text()" attribute="purDate" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/purchAmount/text()" attribute="purAmount" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/currency/text()" attribute="purCurrency" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/exponent/text()" attribute="purExponent" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/pan/text()" attribute="pan" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/time/text()" attribute="txTime" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/status/text()" attribute="txStatus" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/cavv/text()" attribute="txCavv" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/eci/text()" attribute="txEci" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/cavvAlgorithm/text()" attribute="txCavvAlgorithm" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/IReq/iReqCode/text()" attribute="ireqCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/IReq/iReqDetail/text()" attribute="ireqDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/IReq/vendorCode/text()" attribute="ireqVendorCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message" attribute="signature" type="signature" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+-->
+
+	<message name="PARes"
+			 version="1.0.1, 1.0.2"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.PAResMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.PAResProcessor">
+		<transformers>
+			<transform to="PaymentAuthRes" version="1.0" impl="com.oncecorp.visa3d.mpi.domain.payment.PAResToPaymentAuthResTransformer" />
+			<transform to="PaymentAuthRes" version="1.1" impl="com.oncecorp.visa3d.mpi.domain.payment.PAResToPaymentAuthResTransformer" />
+		</transformers>
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/PARes/@id" attribute="refId" type="attr" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Merchant/acqBIN/text()" attribute="merAcqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Merchant/merID/text()" attribute="merID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/xid/text()" attribute="purXid" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/date/text()" attribute="purDate" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/purchAmount/text()" attribute="purAmount" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/currency/text()" attribute="purCurrency" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Purchase/exponent/text()" attribute="purExponent" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/pan/text()" attribute="pan" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/time/text()" attribute="txTime" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/status/text()" attribute="txStatus" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/cavv/text()" attribute="txCavv" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/eci/text()" attribute="txEci" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/TX/cavvAlgorithm/text()" attribute="txCavvAlgorithm" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/IReq/iReqCode/text()" attribute="ireqCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/IReq/iReqDetail/text()" attribute="ireqDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/IReq/vendorCode/text()" attribute="ireqVendorCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message" attribute="signature" type="signature" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/PARes/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+
+	<message name="Error"
+			 version="1.0.1, 1.0.2"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.payment.ErrorMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.payment.ErrorProcessor">
+		<transformers>
+			<transform to="MPIError" version="1.0" impl="com.oncecorp.visa3d.mpi.domain.payment.ErrorToMPIErrorTransformer" />
+			<transform to="MPIError" version="1.1" impl="com.oncecorp.visa3d.mpi.domain.payment.ErrorToMPIErrorTransformer" />
+		</transformers>
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/Error/errorCode/text()" attribute="errorCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/Error/errorMessage/text()" attribute="errorMessage" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/Error/errorDetail/text()" attribute="errorDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/Error/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+	<!-- ====================================================================================== -->
+	<!-- 3-D Secure Message Definition (Profile functionality)									-->
+	<!-- This section defined the messages within the 3-D Secure domain 						-->
+	<!-- ====================================================================================== -->
+
+	<!-- Martin's note - Jan 24, 2003 @ 16:17 -->
+	<!-- we are removing the definitions of profile messages from the core as to not exposed them -->
+	<!-- to external users -->
+
+<!--
+	<message name="IPReq"
+			 version="1.0.1"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.profile.IPReqMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.profile.IPReqProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/IPReq/Merchant/acqBIN/text()" attribute="merAcqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPReq/Merchant/merID/text()" attribute="merID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPReq/Merchant/name/text()" attribute="merName" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPReq/Merchant/country/text()" attribute="merCountry" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPReq/Merchant/url/text()" attribute="merURL" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPReq/CH/acctID/text()" attribute="chAcctID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPReq/CH/expiry/text()" attribute="chExpiry" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPReq/ProfileRequest/profileRequestScope" attribute="profileRequest" type="profileRequest" javatype="com.oncecorp.visa3d.mpi.messaging.ProfileRequestScope[]" />
+			<entry path="/ThreeDSecure/Message/IPReq/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+
+	<message name="IPRes"
+			 version="1.0.1"
+			 protocol="3DSecure"
+			 impl="com.oncecorp.visa3d.mpi.domain.profile.IPResMessage"
+			 processor="com.oncecorp.visa3d.mpi.domain.profile.IPResProcessor">
+		<transformers>
+			<transform to="ProfileAuthRes" version="1.0" impl="com.oncecorp.visa3d.mpi.domain.profile.IPResToProfileAuthResTransformer" />
+			<transform to="ProfileAuthRes" version="1.1" impl="com.oncecorp.visa3d.mpi.domain.profile.IPResToProfileAuthResTransformer" />
+		</transformers>
+		<extensions />
+		<bindings>
+			<entry path="/ThreeDSecure/Message/IPRes/@id" attribute="refId" type="attr" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/Merchant/acqBIN/text()" attribute="merAcqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/Merchant/merID/text()" attribute="merID" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/pan/text()" attribute="pan" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/Profile" attribute="profile" type="profile" javatype="com.oncecorp.visa3d.mpi.messaging.Profile[]" />
+			<entry path="/ThreeDSecure/Message/IPRes/TX/time/text()" attribute="txTime" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/TX/status/text()" attribute="txStatus" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/IReq/iReqCode/text()" attribute="ireqCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/IReq/iReqDetail/text()" attribute="ireqDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/IReq/vendorCode/text()" attribute="ireqVendorCode" type="simple" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message" attribute="signature" type="signature" javatype="java.lang.String" />
+			<entry path="/ThreeDSecure/Message/IPRes/Extension" attribute="extension" type="extension" javatype="com.oncecorp.visa3d.mpi.messaging.Extension[]" />
+		</bindings>
+	</message>
+-->
+
+	<!-- ====================================================================================== -->
+	<!-- MPI Message Definition section (for Payment functionality)								-->
+	<!-- This section defined the messages used by the MPI to carry-out and respond to requests -->
+	<!-- ====================================================================================== -->
+	<message name="PaymentVerifReq"
+			 version="1.0, 1.1"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.payment.PaymentVerifReqMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.payment.PaymentVerifReqProcessor">
+		<transformers>
+			<transform to="VEReq" version="1.0.1" impl="com.oncecorp.visa3d.mpi.intf.payment.PaymentVerifReqToVEReqTransformer" />
+			<transform to="VEReq" version="1.0.2" impl="com.oncecorp.visa3d.mpi.intf.payment.PaymentVerifReqToVEReqTransformer" />
+
+			<transform to="PAReq" version="1.0.1" impl="com.oncecorp.visa3d.mpi.intf.payment.PaymentVerifReqToPAReqTransformer" />
+			<transform to="PAReq" version="1.0.2" impl="com.oncecorp.visa3d.mpi.intf.payment.PaymentVerifReqToPAReqTransformer" />
+		</transformers>
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/PaymentVerifReq/merchantID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/merchantTermURL/text()" attribute="merchantTermURL" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/merchantData/text()" attribute="merchantData" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/transactionID/text()" attribute="transactionID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/pan/text()" attribute="pan" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/panExpiry/text()" attribute="panExpiry" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/purchaseDate/text()" attribute="purchaseDate" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/purchaseAmount/text()" attribute="purchaseAmount" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/purchasePurchAmount/text()" attribute="purchasePurchAmount" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/purchaseCurrency/text()" attribute="purchaseCurrency" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/purchaseDesc/text()" attribute="purchaseDesc" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/purchaseInfo/text()" attribute="purchaseInfo" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/PurchaseRecur/frequency/text()" attribute="purchaseFrequency" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/PurchaseRecur/endRecur/text()" attribute="purchaseEndRecur" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/purchaseInstall/text()" attribute="purchaseInstall" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/browserCategory/text()" attribute="browserCategory" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/browserAccept/text()" attribute="browserAccept" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifReq/browserAgent/text()" attribute="browserAgent" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+	<message name="PaymentVerifRes"
+			 version="1.0, 1.1"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.payment.PaymentVerifResMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.payment.PaymentVerifResProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/PaymentVerifRes/merchantID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifRes/enrolled/text()" attribute="enrolled" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifRes/htmlForm/text()" attribute="htmlForm" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifRes/invalidReq/text()" attribute="invalidReq" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifRes/invalidDetails/text()" attribute="invalidDetails" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentVerifRes/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+	<message name="PaymentAuthReq"
+			 version="1.0, 1.1"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.payment.PaymentAuthReqMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.payment.PaymentAuthReqProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/PaymentAuthReq/merchantID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthReq/paymentAuthMsg/text()" attribute="paymentAuthMsg" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+	<message name="PaymentAuthRes"
+			 version="1.0, 1.1"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.payment.PaymentAuthResMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.payment.PaymentAuthResProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/PaymentAuthRes/merchantID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/purchaseDate/text()" attribute="purchaseDate" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/purchaseAmount/text()" attribute="purchaseAmount" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/authDate/text()" attribute="authDate" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/transactionID/text()" attribute="transactionID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/currency/text()" attribute="currency" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/exponent/text()" attribute="exponent" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/status/text()" attribute="status" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/cavv/text()" attribute="cavv" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/eci/text()" attribute="eci" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/algorithm/text()" attribute="cavvAlgorithm" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/invalidReq/text()" attribute="invalidReq" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/invalidDetails/text()" attribute="invalidDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/PaymentAuthRes/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+	<message name="MPIError"
+			 version="1.0, 1.1"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.payment.MPIErrorMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.payment.MPIErrorProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/MPIError/merchantID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/MPIError/errorCode/text()" attribute="errorCode" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/MPIError/errorMessage/text()" attribute="errorMessage" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/MPIError/errorDetail/text()" attribute="errorDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/MPIError/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+	<!-- ====================================================================================== -->
+	<!-- MPI Message Definition section (for Profile functionality)								-->
+	<!-- This section defined the messages used by the MPI to carry-out and respond to requests -->
+	<!-- ====================================================================================== -->
+
+<!--
+	<message name="ProfileVerifReq"
+			 version="1.0"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.profile.ProfileVerifReqMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.profile.ProfileVerifReqProcessor">
+		<transformers>
+			<transform to="IPReq" version="1.0.1" impl="com.oncecorp.visa3d.mpi.intf.profile.ProfileVerifReqToIPReqTransformer" />
+		</transformers>
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/ProfileVerifReq/merchantID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifReq/merchantTermURL/text()" attribute="merchantTermURL" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifReq/merchantData/text()" attribute="merchantData" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifReq/pan/text()" attribute="pan" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifReq/panExpiry/text()" attribute="panExpiry" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifReq/browserCategory/text()" attribute="browserCategory" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifReq/browserAccept/text()" attribute="browserAccept" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifReq/browserAgent/text()" attribute="browserAgent" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifReq/ProfileRequest/profileRequestScope" attribute="profileRequest" type="profileRequest" javatype="com.oncecorp.visa3d.mpi.messaging.ProfileRequestScope" />
+		</bindings>
+	</message>
+
+	<message name="ProfileVerifRes"
+			 version="1.0"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.profile.ProfileVerifResMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.profile.ProfileVerifResProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/ProfileVerifRes/HTMLForm/text()" attribute="htmlForm" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifRes/enrolled/text()" attribute="enrolled" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifRes/invalidReq/text()" attribute="invalidReq" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifRes/invalidDetails/text()" attribute="invalidDetails" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileVerifRes/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+	<message name="ProfileAuthReq"
+			 version="1.0"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.profile.ProfileAuthReqMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.profile.ProfileAuthReqProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/ProfileAuthReq/merchantID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileAuthReq/ProfileAuthMsg/text()" attribute="ProfileAuthMsg" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+
+	<message name="ProfileAuthRes"
+			 version="1.0"
+			 protocol="MPI_Interface"
+			 impl="com.oncecorp.visa3d.mpi.intf.profile.ProfileAuthResMessage"
+			 processor="com.oncecorp.visa3d.mpi.intf.profile.ProfileAuthResProcessor">
+		<transformers />
+		<extensions />
+		<bindings>
+			<entry path="/MPI_Interface/ProfileAuthRes/acqBIN/text()" attribute="acqBIN" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileAuthRes/merchantID/text()" attribute="merchantID" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileAuthRes/Profile" attribute="profile" type="profile" javatype="com.oncecorp.visa3d.mpi.messaging.Profile[]" />
+			<entry path="/MPI_Interface/ProfileAuthRes/authPAN/text()" attribute="authPAN" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileAuthRes/time/text()" attribute="time" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileAuthRes/status/text()" attribute="status" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileAuthRes/invalidReq/text()" attribute="invalidReq" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileAuthRes/invalidDetails/text()" attribute="invalidDetail" type="simple" javatype="java.lang.String" />
+			<entry path="/MPI_Interface/ProfileAuthRes/vendorCode/text()" attribute="vendorCode" type="simple" javatype="java.lang.String" />
+		</bindings>
+	</message>
+-->
+</messageDefinition>

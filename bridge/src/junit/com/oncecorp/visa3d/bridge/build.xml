@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Ant 1.4 main build script for 3-D Secure VISA MPI product
+
+  Build file to allow ant (http://jakarta.apache.org/ant/) to be used
+  to build VISA MPI DataBridge packages and any associated Junit test cases.
+
+  Authors: swang@oncecorp.com
+-->
+<project name="Visa 3D - MPI DataBridge Junit SubProject" default="bridge-junit-run" basedir=".">
+  <!-- *****************************************************************************************
+       * Initilization of all property settings
+       ***************************************************************************************** -->
+  <target name="bridge-junit-init">
+    <property name="bridge.junit.class.dir"    value="${build.dir}/bridge/junit" />
+    <property name="bridge.junit.jar.file"     value="Databridge-junit.jar" />
+    <property name="bridge.junit.javadoc.dir"  value="${build.dir}/javadoc/bridge/junit" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * prepare folder structure
+       ***************************************************************************************** -->
+  <target name="bridge-junit-prepare" depends="bridge-junit-clean">
+    <echo message="Preparing folder structure for ONCEmpi DataBridge Junit Tests..." />
+
+    <!-- =======================================================================================
+         + create the necessary folder structure
+         ======================================================================================= -->
+    <mkdir dir="${bridge.junit.class.dir}" />
+    <mkdir dir="${bridge.junit.javadoc.dir}" />
+
+    <!-- =======================================================================================
+         + create reference to necessary 3rd party jar files
+         ======================================================================================= -->
+    <path id="javac.classpath">
+      <pathelement path="${classpath}" />
+      <fileset dir="${lib.dir}/bridge">
+        <include name="**/*.jar" />
+      </fileset>
+      <fileset dir="${lib.dir}/junit">
+        <include name="**/*.jar" />
+      </fileset>
+      <fileset dir="${xlib.dir}">
+        <include name="**/*.jar" />
+      </fileset>
+      <pathelement location="${bridge.junit.class.dir}" />
+      <pathelement location="${bridge.source.class.dir}" />
+    </path>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Delete all *.class, junit test log, javadocs files
+       ******************************************************************************************-->
+  <target name="bridge-junit-clean" depends="bridge-junit-init">
+    <echo message="Cleaning ONCEmpi DataBridge Junit binary files..." />
+
+    <delete failonerror="false" includeEmptyDirs="true">
+      <fileset dir="${bridge.junit.class.dir}" />
+      <fileset dir="${report.dir}" includes="TEST-com.oncecorp.visa3d.bridge.*.xml" />
+      <fileset dir="${bridge.junit.javadoc.dir}" />
+    </delete>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build *.class files
+       ******************************************************************************************-->
+  <target name="bridge-junit-build-class" depends="bridge-junit-prepare">
+    <echo message="Creating CLASS files for ONCEmpi DataBridge Junit Tests..." />
+
+    <!-- compile all .java files -->
+    <javac compiler="${javac.compiler}"
+           srcdir="${bridge.junit.dir}"
+           destdir="${bridge.junit.class.dir}"
+           fork="${javac.fork}"
+           deprecation="${javac.deprecation}"
+           debug="${javac.debug}">
+      <classpath refid="javac.classpath" />
+    </javac>
+
+    <!-- copy all property files from source to class folder -->
+    <copy todir="${bridge.junit.class.dir}/${bridge.package}">
+      <fileset dir="${bridge.junit.dir}/${bridge.package}">
+        <include name="**/*" />
+        <exclude name="**/build.*" />
+        <exclude name="**/vss*.*" />
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build *.jar files
+       ******************************************************************************************-->
+  <target name="bridge-junit-build-jar" depends="bridge-junit-build-class">
+    <echo message="Creating JAR files for ONCEmpi DataBridge Junit tests..." />
+
+    <jar destfile="${dist.dir}/${bridge.junit.jar.file}"
+         basedir="${bridge.junit.class.dir}"
+         includes="${bridge.package}/**/*"
+    />
+  </target>
+
+  <!-- ******************************************************************************************
+       * Compile JavaDoc for ONCEmpi DataBridge JUNIT Tests
+       ******************************************************************************************-->
+  <target name="bridge-junit-build-javadoc" depends="bridge-junit-prepare" if="enable.javadoc">
+    <echo message="Creating Javadoc for ONCEmpi DataBridge JUNIT Tests..." />
+
+    <javadoc sourcepath="${bridge.junit.dir}"
+             destdir="${bridge.junit.javadoc.dir}"
+             packagenames="com.oncecorp.visa3d.bridge.auditing.*,
+                           com.oncecorp.visa3d.bridge.beans.*,
+                           com.oncecorp.visa3d.bridge.configure.*,
+                           com.oncecorp.visa3d.bridge.listening.*,
+                           com.oncecorp.visa3d.bridge.loggin.*,
+                           com.oncecorp.visa3d.bridge.security.*,
+                           com.oncecorp.visa3d.bridge.utility.*"
+             author="true" version="true" use="true"
+             bottom="Copyright (c)2002 Once Corporation. All Rights Reserved."
+             splitindex="true" noindex="false"
+             windowtitle="3-D Secure Merchant Plug-In DataBridge JUNIT API"
+             doctitle="3D Secure MPI DataBridge JUNIT Tests">
+      <classpath refid="javac.classpath" />
+    </javadoc>
+
+    <!-- zip all javadoc into a zip file which is easier for versioning and maintenance -->
+    <zip zipfile="${dist.dir}/javaDoc-Databridge-junit.zip"
+         basedir="${bridge.junit.javadoc.dir}"
+         includes="**/*.html,**/*.css"
+         update="false" />
+  </target>
+
+
+  <!-- *****************************************************************************************
+       * Build Junit Tests
+       ***************************************************************************************** -->
+  <target name="bridge-junit-build"
+          depends="bridge-junit-build-jar, bridge-junit-build-class, bridge-junit-build-javadoc" />
+
+  <!-- *****************************************************************************************
+       * Run Junit Tests
+       ***************************************************************************************** -->
+  <target name="bridge-junit-run" depends="bridge-junit-build">
+    <junit haltonerror="${junit.haltonerror}" haltonfailure="${junit.haltonfailure}" printsummary="yes" showoutput="yes">
+      <formatter type="xml" />
+      <classpath refid="javac.classpath" />
+      <batchtest fork="yes" todir="${report.dir}">
+        <fileset dir="${bridge.junit.class.dir}">
+          <include name="${bridge.package}/*/${testName.pattern}" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+</project>

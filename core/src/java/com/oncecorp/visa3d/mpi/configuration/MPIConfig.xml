@@ -1,0 +1,67 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!--
+	* (C) Copyright Once Corp. 2002  All rights reserved.
+	*
+	* The program is provided "as is" without any warranty express or
+	* implied, including the warranty of non-infringement and the implied
+	* warranties of merchantability and fitness for a particular purpose.
+	* Once Corporation will not be liable for any damages suffered by
+	* you as a result of using the Program.
+	* In no event will Once Corporation be liable for any special, indirect
+	* or consequential damages or lost profits even if Once Corporation
+	* has been advised of the possibility of their occurrence. Once
+	* Corporation will not be liable for any third party claims against you.
+	*
+	* ========================================================
+	* $Header: $
+	*
+-->
+
+<MPI_CONFIG>
+	<!-- ================== Time Limit Data =============================== -->
+	<ConfigData name="CardRangeCacheExpiryTime" value="5" /> <!-- Unit: mins -->
+	<ConfigData name="CardRangeMonitorSleepInterval" value = "5" /> <!-- Unit: mins -->
+	<ConfigData name="InitCRMonitorUntilFirstRequest" value="false" />
+	<ConfigData name="TransactionCacheExpiryInterval" value="1" /> <!-- VEReq/PAReq cache. Unit: mins -->
+
+	<!-- ==============  Error thread ========================= -->
+	<ConfigData name="ErrorDispatchMode" value="JIT" /> <!-- value could be: JIT, Delay -->
+	<ConfigData name="ErrorThreadSleepInterval" value="5000" /> <!-- Unit: millisec -->
+
+	<!-- ================== External Entities Data ==================== -->
+	<ConfigData name="VisaDirectoryURL" value="https://204.94.129.2:9660/cth/md/ONCEmpi+1.0+JAVA+1.3.1" />
+
+	<!-- ================== SSL Configurable Data ====================== -->
+	<ConfigData name="JSSEProvider" value="com.sun.net.ssl.internal.ssl.Provider" />
+	<ConfigData name="HttpsProtocolHandler" value="com.sun.net.ssl.internal.www.protocol" />
+	<ConfigData name="SSLClientKeystore" value="/opt/WebSphere/AppServer/etc/mpi.jks" />
+	<ConfigData name="SSLClientKeystorePassword" value="changeit" />
+	<!-- <ConfigData name="https.proxyHost"      value="onceWebProxy" /> -->
+	<!-- <ConfigData name="https.proxyPort"      value="8080" /> -->
+
+	<!-- ================== JMS configuration data =========================== -->
+	<ConfigData name="JMSConnectionFactoryJndi" value="databridge.tcf" />
+	<ConfigData name="JMSTopicJndi" value="databridge.topic" />
+	<ConfigData name="JMSEncryptionMode" value="false" />
+	
+	<!-- ================== Triple-DES encrypter configuration data ===========-->
+	<ConfigData name="TripleDESKeystoreLocation" value="DESede.keystore" />
+	<ConfigData name="TripleDESKeystorePwd" value="changeit" />
+	<ConfigData name="TripleDESRawkeyAlias" value="rawkey" />
+	<ConfigData name="TripleDESRawkeyPwd" value="changeit" />
+	<ConfigData name="JCEProvider" value="com.sun.crypto.provider.SunJCE" />
+	
+	<!-- ================== Performace monitoring configuration data =========== -->
+	<ConfigData name="PerformanceMetricsSamplingTime" value="60" /> <!-- Unit: secs -->
+	
+	<!-- ================== JMX configuration data =========================== -->
+    <ConfigData name="JrmpAdaptorJNDI"    value="Core:JRMPAdaptor" /> 
+    <ConfigData name="InitContextFactory" value="com.sun.jndi.rmi.registry.RegistryContextFactory" /> 
+    <ConfigData name="RmiRegProviderUrl"  value="rmi://lego.oncecorp.com:1099" />  
+     
+    <!-- ================== All identified MBeans in Core ======================= -->
+    <ConfigData name="Core:mbean=Configurator"      value="com.oncecorp.visa3d.mpi.configuration.Configurator"/>
+    <ConfigData name="Core:mbean=ExecutionControl"  value="com.oncecorp.visa3d.mpi.controller.ExecutionControl"/>
+    <ConfigData name="Core:mbean=PerformanceMonitor" value="com.oncecorp.visa3d.mpi.messaging.PerformanceMonitor"/>
+
+</MPI_CONFIG>

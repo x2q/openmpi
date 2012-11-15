@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Ant 1.5 OpenMPI v1.2 core build script for the Verified@ONCE Product Suite
+    Author: swang@oncecorp.com
+    Author: Andrew Whitehead
+-->
+<project name="OpenMPI v1.2" default="build-all" basedir=".">
+  <!-- *****************************************************************************************
+       * Initilization of all property settings
+       ***************************************************************************************** -->
+  <target name="init">
+    <tstamp />
+    <!-- =======================================================================================
+         + General properties
+         ======================================================================================= -->
+    <property file="build.properties" />
+
+    <echo message="Executing ANT build script for platform: ${target.platform}/${target.database}" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * prepare folder structure
+       ***************************************************************************************** -->
+  <target name="prepare" depends="init">
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${dist.dir}" />
+    <mkdir dir="${dist.dir}/installer" />
+    <mkdir dir="${report.dir}" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Check if sub-components are present
+       ***************************************************************************************** -->
+  <target name="check-subproject" depends="init">
+    <!-- =======================================================================================
+         + core build scripts
+         ======================================================================================= -->
+    <available file="${core.source.dir}/${core.package}/build.xml"      type="file" property="core.source.present" />
+    <available file="${core.source.descriptor.dir}/web.xml"             type="file" property="core.source.web.present" />
+    <available file="${core.junit.dir}/${core.package}/build.xml"       type="file" property="core.junit.present" />
+
+    <!-- =======================================================================================
+         + bridge build scripts
+         ======================================================================================= -->
+    <available file="${bridge.source.dir}/${bridge.package}/build.xml"    type="file" property="bridge.source.present" />
+    <available file="${bridge.source.descriptor.dir}/web.xml"             type="file" property="bridge.source.web.present" />
+    <available file="${bridge.junit.dir}/${bridge.package}/build.xml"     type="file" property="bridge.junit.present" />
+
+    <!-- =======================================================================================
+         + 3rd party libraries
+         ======================================================================================= -->
+    <available file="${lib.dir}" type="dir" property="lib.present" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build Verified@ONCE Core component v1.1
+       *
+       *  Only build when the source build.xml is present
+       ***************************************************************************************** -->
+  <target name="build-core-source"
+          depends="prepare, check-subproject"
+          if="core.source.present"
+  >
+    <ant dir="${core.source.dir}/${core.package}" target="core-source-build" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Run Verified@ONCE Core v1.1 Junit tests
+       *
+       *  Only build when the source build.xml is present
+       ***************************************************************************************** -->
+  <target name="run-core-junit"
+          depends="check-subproject, prepare"
+          if="enable.testing"> <!-- core.junit.present? -->
+    <ant dir="${core.junit.dir}/${core.package}" target="core-junit-run" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build common JAR files used by all component of the Verified@ONCE product Suite
+       ***************************************************************************************** -->
+  <target name="build-common-jar"
+          depends="build-core-source, build-bridge-source">
+
+    <echo message="Creating COMMON JAR file for all Verified@ONCE Core components..." />
+    <mkdir dir="${dist.common.dir}" />
+    <mkdir dir="${core.source.class.dir}" />
+    <jar destfile="${dist.common.dir}/MPICommon.jar"
+         basedir="${core.source.class.dir}"
+         includes="com/oncecorp/visa3d/mpi/configuration/Config.class,
+             com/oncecorp/visa3d/mpi/configuration/CoreConfigInfo.class,
+             com/oncecorp/visa3d/mpi/configuration/MerchantMetaInfo.class,
+             com/oncecorp/visa3d/mpi/configuration/MPIConfigDefinition.class,
+             com/oncecorp/visa3d/mpi/configuration/ValidationInfo.class,
+             com/oncecorp/visa3d/mpi/messaging/MsgTypeStatisticResult.class,
+             com/oncecorp/visa3d/mpi/messaging/MsgStatusStatisticResult.class,
+             com/oncecorp/visa3d/mpi/messaging/MsgMerchantIDStatisticResult.class,
+             com/oncecorp/visa3d/mpi/messaging/StatusCategoryID.class
+             com/oncecorp/visa3d/mpi/messaging/Message.class,
+             com/oncecorp/visa3d/mpi/utility/Utils.class,
+             com/oncecorp/visa3d/mpi/utility/XMLSerializable.class,
+             com/oncecorp/visa3d/mpi/utility/XMLUtil.class" />
+    <jar destfile="${dist.common.dir}/BridgeBeans.jar" >
+      <fileset dir="${bridge.source.class.dir}" includes="com/oncecorp/visa3d/bridge/beans/**" />
+      <fileset dir="${bridge.source.class.dir}" includes="com/oncecorp/visa3d/bridge/utility/**" />
+    </jar>
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build WAR files for Verified@ONCE Core
+       ***************************************************************************************** -->
+  <target name="build-core-war"
+          depends="build-core-source, build-common-jar"
+          if="core.source.web.present">
+    <echo message="Creating WAR file for all Verified@ONCE Core components..." />
+
+    <war destfile="${dist.dir}/CoreServer.war" webxml="${core.source.descriptor.dir}/web-${target.platform}-${target.database}.xml">
+      <!-- <lib dir="${lib.dir}/common" />
+      <lib dir="${lib.dir}/core" /> -->
+      <fileset dir="${root.dir}" includes="${core.libs}" />
+      <classes dir="${core.source.class.dir}" />
+    </war>
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build Installer-ready WAR files for Verified@ONCE Core Server Component
+       ***************************************************************************************** -->
+  <target name="build-core-installer-war"
+          depends="build-core-source, build-common-jar"
+          if="core.source.web.present">
+    <echo message="Creating Installer-compliant WAR file for all Verified@ONCE Core components..." />
+
+    <war destfile="${dist.dir}/installer/CoreServer.war" webxml="${core.source.descriptor.dir}/web-installer.xml">
+      <!-- <lib dir="${lib.dir}/common" />
+      <lib dir="${lib.dir}/core" /> -->
+      <fileset dir="${root.dir}" includes="${core.libs}" />
+      <classes dir="${core.source.class.dir}" />
+    </war>
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build everything associated with Verified@ONCE Core
+       ***************************************************************************************** -->
+  <target name="build-core" depends="build-core-war,
+                                     build-core-installer-war,
+                                     build-core-source,
+                                     run-core-junit" />
+
+  <!-- *****************************************************************************************
+       * Build Verified@ONCE DataBridge component
+       *
+       *  Only build when the source build.xml is present
+       ***************************************************************************************** -->
+  <target name="build-bridge-source"
+          depends="check-subproject, prepare"
+          if="bridge.source.present"
+  >
+    <ant dir="${bridge.source.dir}/${bridge.package}" target="bridge-source-build" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Run Verified@ONCE DataBridge Junit tests
+       *
+       *  Only build when the source build.xml is present
+       ***************************************************************************************** -->
+  <target name="run-bridge-junit"
+          depends="build-bridge-source, check-subproject, prepare"
+          if="enable.testing"
+  > <!-- bridge.junit.present? -->
+    <ant dir="${bridge.junit.dir}/${bridge.package}" target="bridge-junit-run" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build WAR files for Verified@ONCE DataBridge
+       ***************************************************************************************** -->
+  <target name="build-bridge-war"
+          depends="build-bridge-source"
+          if="bridge.source.web.present"
+  >
+    <echo message="Creating WAR file for all Verified@ONCE DataBridge components..." />
+
+    <war destfile="${dist.dir}/DataBridge.war" webxml="${bridge.source.descriptor.dir}/web-${target.platform}-${target.database}.xml">
+      <!-- <lib dir="${lib.dir}/common" />
+      <lib dir="${lib.dir}/bridge" /> -->
+      <fileset dir="${root.dir}" includes="${bridge.libs}" />
+      <classes dir="${bridge.source.class.dir}" />
+    </war>
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build Installer-compliant WAR files for Verified@ONCE DataBridge
+       ***************************************************************************************** -->
+  <target name="build-bridge-installer-war"
+          depends="build-bridge-source"
+          if="bridge.source.web.present"
+  >
+    <echo message="Creating Installer-compliant WAR file for all Verified@ONCE DataBridge components..." />
+
+    <war destfile="${dist.dir}/installer/DataBridge.war" webxml="${bridge.source.descriptor.dir}/web-installer.xml">
+      <!-- <lib dir="${lib.dir}/common" />
+      <lib dir="${lib.dir}/bridge" /> -->
+      <fileset dir="${root.dir}" includes="${bridge.libs}" />
+      <classes dir="${bridge.source.class.dir}" />
+    </war>
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build everything associated with Verified@ONCE DataBridge
+       ***************************************************************************************** -->
+  <target name="build-bridge" depends="build-bridge-source,
+                                       build-bridge-installer-war,
+                                       run-bridge-junit,
+                                       build-bridge-war" />
+
+  <!-- *****************************************************************************************
+       * Build everything
+       ***************************************************************************************** -->
+  <target name="build-all-installer" depends="build-core-installer-war,
+                                              build-bridge-installer-war">
+		<!-- Copy the latest build to the "latest" directory. Easier for installer -->
+		<copy todir="${dist.latest.dir}" >
+			<fileset dir="${dist.dir}" >
+  				<include name="**/*"/>
+			</fileset>
+		</copy>
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build everything
+       ***************************************************************************************** -->
+  <target name="build-all" depends="build-core, build-bridge" />
+
+  <!-- *****************************************************************************************
+       * Clean everything associated with Core
+       ***************************************************************************************** -->
+  <target name="clean-core" depends="init, check-subproject">
+    <ant dir="${core.source.dir}/${core.package}" target="core-source-clean" />
+    <ant dir="${core.junit.dir}/${core.package}" target="core-junit-clean" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Clean everything associated with DataBridge
+       ***************************************************************************************** -->
+  <target name="clean-bridge" depends="init, check-subproject">
+    <ant dir="${bridge.junit.dir}/${bridge.package}" target="bridge-junit-clean" />
+    <ant dir="${bridge.source.dir}/${bridge.package}" target="bridge-source-clean" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Clean everything
+       ***************************************************************************************** -->
+  <target name="clean-all" depends="clean-core, clean-bridge" />
+  <target name="clean-all-dist" depends="init">
+    <delete failonerror="false" includeemptydirs="true">
+      <fileset dir="${build.dir}" />
+    </delete>
+  </target>
+
+    <!-- *****************************************************************************************
+       * Alternate build targets
+       ***************************************************************************************** -->
+  <target name="test">
+    <antcall target="build-all">
+      <param name="enable.testing" value="1" />
+    </antcall>
+  </target>
+  <target name="docs">
+    <antcall target="build-all">
+      <param name="enable.javadoc" value="1" />
+    </antcall>
+  </target>
+  <target name="all">
+    <antcall target="build-all">
+      <param name="enable.testing" value="1" />
+      <param name="enable.javadoc" value="1" />
+    </antcall>
+  </target>
+</project>

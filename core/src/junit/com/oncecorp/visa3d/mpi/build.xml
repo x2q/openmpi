@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Ant 1.4 main build script for 3-D Secure VISA MPI product
+
+  Build file to allow ant (http://jakarta.apache.org/ant/) to be used
+  to build VISA MPI product version packages and any associated Junit test cases.
+
+  Authors: swang@oncecorp.com
+-->
+<project name="Visa 3D - MPI Core Junit SubProject" default="core-junit-run" basedir=".">
+  <!-- *****************************************************************************************
+       * Initilization of all property settings
+       ***************************************************************************************** -->
+  <target name="core-junit-init">
+    <property name="core.junit.class.dir"   value="${build.dir}/class/core/junit" />
+    <property name="core.junit.jar.file"    value="MPICore-junit.jar" />
+    <property name="core.junit.javadoc.dir" value="${build.dir}/javadoc/core/junit" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * prepare folder structure
+       ***************************************************************************************** -->
+  <target name="core-junit-prepare" depends="core-junit-clean">
+    <echo message="Preparing folder structure for Verified@ONCE Core Junit Tests..." />
+
+    <!-- =======================================================================================
+         + create the necessary folder structure
+         ======================================================================================= -->
+    <mkdir dir="${core.junit.class.dir}" />
+    <mkdir dir="${core.junit.javadoc.dir}" />
+
+    <!-- =======================================================================================
+         + create reference to necessary 3rd party jar files
+         ======================================================================================= -->
+    <path id="javac.classpath">
+      <pathelement path="${classpath}" />
+      <fileset dir="${xlib.dir}/core">
+        <include name="**/*.jar" />
+      </fileset>
+      <fileset dir="${lib.dir}/core">
+        <include name="**/*.jar" />
+      </fileset>
+      <fileset dir="${lib.dir}/junit">
+        <include name="**/*.jar" />
+      </fileset>
+      <pathelement location="${core.junit.class.dir}" />
+      <pathelement location="${core.source.class.dir}" />
+    </path>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Delete all *.class, junit log, javadoc files
+       ******************************************************************************************-->
+  <target name="core-junit-clean" depends="core-junit-init">
+    <echo message="Cleaning Verified@ONCE Core Junit binary files..." />
+
+    <delete failonerror="false" includeEmptyDirs="true">
+      <fileset dir="${core.junit.class.dir}" />
+      <fileset dir="${report.dir}" includes="TEST-com.oncecorp.visa3d.mpi.*.xml" />
+      <fileset dir="${core.junit.javadoc.dir}" />
+    </delete>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build *.class files
+       ******************************************************************************************-->
+  <target name="core-junit-build-class" depends="core-junit-prepare">
+    <echo message="Creating CLASS files for Verified@ONCE Core Junit Tests..." />
+
+    <!-- compile all .java files -->
+    <javac compiler="${javac.compiler}"
+           srcdir="${core.junit.dir}"
+           destdir="${core.junit.class.dir}"
+           fork="${javac.fork}"
+           deprecation="${javac.deprecation}"
+           debug="${javac.debug}">
+      <classpath refid="javac.classpath" />
+    </javac>
+
+    <!-- copy all property files from source to class folder -->
+    <copy todir="${core.junit.class.dir}/${core.package}">
+      <fileset dir="${core.junit.dir}/${core.package}">
+        <include name="**/*" />
+        <exclude name="**/build.*" />
+        <exclude name="**/vss*.*" />
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- ******************************************************************************************
+       * Build *.jar files
+       ******************************************************************************************-->
+  <target name="core-junit-build-jar" depends="core-junit-build-class">
+    <echo message="Creating JAR files for Verified@ONCE Core Junit tests..." />
+
+    <jar destfile="${dist.dir}/${core.junit.jar.file}"
+         basedir="${core.junit.class.dir}"
+         includes="${core.package}/**/*"
+    />
+  </target>
+
+  <!-- ******************************************************************************************
+       * Compile JavaDoc for Verified@ONCE Core Component
+       ******************************************************************************************-->
+  <target name="core-junit-build-javadoc" depends="core-junit-prepare" if="enable.javadoc">
+    <echo message="Creating Javadoc for Verified@ONCE Core JUNIT Tests..." />
+
+    <javadoc sourcepath="${core.junit.dir}"
+             destdir="${core.junit.javadoc.dir}"
+             packagenames="com.oncecorp.visa3d.mpi.configuration.*,
+                           com.oncecorp.visa3d.mpi.controller.*,
+                           com.oncecorp.visa3d.mpi.domain.*,
+                           com.oncecorp.visa3d.mpi.intf.*,
+                           com.oncecorp.visa3d.mpi.logging.*,
+                           com.oncecorp.visa3d.mpi.messaging.*,
+                           com.oncecorp.visa3d.mpi.monitoring.*,
+                           com.oncecorp.visa3d.mpi.publishing.*,
+                           com.oncecorp.visa3d.mpi.security.*,
+                           com.oncecorp.visa3d.mpi.utility.*"
+             author="true" version="true" use="true"
+             bottom="Copyright (c)2002-2003 Once Corporation. All Rights Reserved."
+             splitindex="true" noindex="false"
+             windowtitle="Verified@ONCE JUNIT Test API"
+             doctitle="Verified@ONCE JUNIT Tests">
+      <classpath refid="javac.classpath" />
+    </javadoc>
+
+    <!-- zip all javadoc into a zip file which is easier for versioning and maintenance -->
+    <zip zipfile="${dist.dir}/javaDoc-MPICore-junit.zip"
+         basedir="${core.junit.javadoc.dir}"
+         includes="**/*.html,**/*.css"
+         update="false" />
+  </target>
+
+  <!-- *****************************************************************************************
+       * Build Junit Tests
+       ***************************************************************************************** -->
+  <target name="core-junit-build" depends="core-junit-build-jar, core-junit-build-class, core-junit-build-javadoc" />
+
+  <!-- *****************************************************************************************
+       * Run Junit Tests
+       ***************************************************************************************** -->
+  <target name="core-junit-run" depends="core-junit-build">
+    <junit haltonerror="${junit.haltonerror}" haltonfailure="${junit.haltonfailure}" printsummary="yes" showoutput="yes">
+      <formatter type="xml" />
+      <classpath refid="javac.classpath" />
+      <batchtest fork="yes" todir="${report.dir}">
+        <fileset dir="${core.junit.class.dir}">
+          <include name="${core.package}/*/${testName.pattern}" />
+          <exclude name="${core.package}/persistent/*" />
+          <exclude name="${core.package}/intf/profile/*" />
+          <exclude name="${core.package}/controller/*2" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+</project>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE mpidb:databridge>
+<mpidb:databridge xmlns:mpidb="http://www.oncecorp.com/ONCEmpi/databridge-configuration" autoSave="true">
+	<mpidb:ListeningService timeServiceInterval="1440">
+		<mpidb:tripleDES name="TripleDESKeystoreLocation" value="/bea/wlserver6.1/config/oncecorp/databridge/local.keystore"/>
+		<mpidb:tripleDES name="JCEProvider" value="com.sun.crypto.provider.SunJCE"/>
+		<mpidb:tripleDES name="TripleDESRawkeyAlias" value="testkey"/>
+		<mpidb:tripleDES name="TripleDESRawkeyPwd" value="changeit"/>
+		<mpidb:tripleDES name="TripleDESKeystorePwd" value="changeit"/>
+	</mpidb:ListeningService>
+	<mpidb:AuditingService samplingTime="350" merchantSchema="databridge">
+		<mpidb:mailServer auth="false" username="info" passwd="XXX" inet="mail"/>
+		<mpidb:logHandler id="handler1" status="start" maxRows="170" threshold="168" mailNotify="true" period="24:00:00">
+			<mpidb:merchantid>12AB,cd/34-EF  -g,5/H-67</mpidb:merchantid>
+			<mpidb:merchantid>22-22</mpidb:merchantid>
+			<mpidb:merchantid>Merchant1</mpidb:merchantid>
+			<mpidb:merchantid>123-456-789-012-123-456-</mpidb:merchantid>
+			<mpidb:email>
+				<mpidb:emailTemplate>/bea/wlserver6.1/config/oncecorp/databridge/TemplateHandler1.xml</mpidb:emailTemplate>
+				<mpidb:sender>info@oncecorp.com</mpidb:sender>
+				<mpidb:to>info@oncecorp.com,web@oncecorp.com,jzhu@oncecorp.com</mpidb:to>
+				<mpidb:cc>info@oncecorp.com,web@oncecorp.com</mpidb:cc>
+			</mpidb:email>
+		</mpidb:logHandler>
+	</mpidb:AuditingService>
+	<mpidb:MonitoringService>
+		<mpidb:jmxconfig name="JrmpAdaptorJNDI" value="Bridge:JRMPAdaptor"/>
+		<mpidb:jmxconfig name="InitContextFactory" value="com.sun.jndi.rmi.registry.RegistryContextFactory"/>
+		 <mpidb:jmxconfig name="Bridge:mbean=Configuration" value="com.oncecorp.visa3d.bridge.configure.Configuration" />
+		 <mpidb:jmxconfig name="Bridge:mbean=Auditing" value="com.oncecorp.visa3d.bridge.auditing.Auditing" />
+		 <mpidb:jmxconfig name="Bridge:mbean=MerchantInfo" value="com.oncecorp.visa3d.bridge.auditing.MerchantInfo" />
+		 <mpidb:jmxconfig name="Bridge:mbean=AuditingPerformance" value="com.oncecorp.visa3d.bridge.auditing.AuditingPerformance" />
+		 <mpidb:jmxconfig name="Bridge:mbean=Listening" value="com.oncecorp.visa3d.bridge.listening.Listening" />
+		<mpidb:jmxconfig name="RmiRegProviderUrl" value="rmi://192.168.0.10:1199"/>
+	</mpidb:MonitoringService>
+	<mpidb:PlugIns>
+		<mpidb:plugin id="plugin2" classname="com.oncecorp.visa3d.bridge.testharness.MsgListener2">
+			<mpidb:msg type="PAReq" version="1.0.1">
+				<mpidb:field encryption="true">CH/acctID</mpidb:field>
+				<mpidb:field fmt="X{0}#{3}">Merchant/acqBIN</mpidb:field>
+			</mpidb:msg>
+			<mpidb:listener id="channel1" status="start" acceptFilter="true" acceptDynamicFilter="true">
+				<mpidb:customData><![CDATA[XXXXXX]]></mpidb:customData>
+			</mpidb:listener>
+		</mpidb:plugin>
+		<mpidb:plugin id="plugin1" classname="com.oncecorp.visa3d.bridge.testharness.MsgListener">
+			<mpidb:msg type="PARes" version="1.0.1">
+				<mpidb:field encryption="true">CH/acctID</mpidb:field>
+			</mpidb:msg>
+			<mpidb:msg type="PAReq" version="1.0.1">
+				<mpidb:field encryption="true">CH/acctID</mpidb:field>
+			</mpidb:msg>
+			<mpidb:listener id="channel1" status="start" acceptFilter="true" acceptDynamicFilter="true">
+				<mpidb:merchantid>Merchant1</mpidb:merchantid>
+				<mpidb:customData><![CDATA[XXXXXX]]></mpidb:customData>
+			</mpidb:listener>
+			<mpidb:listener id="channel2" status="stop" acceptFilter="true" acceptDynamicFilter="true">
+				<mpidb:merchantid>Merchant2</mpidb:merchantid>
+				<mpidb:customData><![CDATA[XXXXXX]]></mpidb:customData>
+			</mpidb:listener>
+		</mpidb:plugin>
+	</mpidb:PlugIns>
+</mpidb:databridge>

@@ -1,0 +1,25 @@
+<subject>System Notification: ONCEmpi component</subject>
+
+<body>
+**                                                                               **
+** System Notification: ONCEmpi component                                        **
+** Installed on oncempi.oncecorp.com                                             **
+**                                                                               **
+
+Log Database Notification
+==========================
+Log Id: %logId%
+Current Table: %messageType%
+Current Log size: %currentNumber% messages logged
+Threshold size: %thresholdNumber%
+Maximum size: %maximumNumber%
+Last updated: %timestamp%
+==========================
+Please take corrective action to properly archive the logging data and reset the logging database
+in order to ensure continuous and successful logging operations.
+
+This email was sent automatically by the ONCEmpi component because the option 
+          [X]Notify by email on exceeded threshold or maximum
+
+was selected in your user preferences.
+</body>
