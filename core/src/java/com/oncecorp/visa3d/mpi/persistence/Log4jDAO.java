@@ -72,9 +72,9 @@ public class Log4jDAO implements SimpleDAO {
 						+ DAODefinition.LOG4J_CREATE_STMT2);
 
 			// Update table with all elements contained in the Properties object
-			Enumeration enum = data.keys();
-			while (enum.hasMoreElements()) {
-				String key = (String) enum.nextElement();
+			Enumeration enumk = data.keys();
+			while (enumk.hasMoreElements()) {
+				String key = (String) enumk.nextElement();
 				String value = (String) data.get(key);
 
 				System.out.println(
